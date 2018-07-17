@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.Test.Apex.VisualStudio.Editor;
+using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Web.LibraryManager.IntegrationTest.Helpers;
@@ -71,6 +71,14 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
             get
             {
                 return VisualStudio.ObjectModel.Solution;
+            }
+        }
+
+        public SolutionExplorerService SolutionExplorer
+        {
+            get
+            {
+                return VisualStudio.ObjectModel.Shell.ToolWindows.SolutionExplorer;
             }
         }
 

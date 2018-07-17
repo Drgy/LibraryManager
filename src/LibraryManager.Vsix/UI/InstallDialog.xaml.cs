@@ -217,5 +217,11 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
                                      pnResult: out result);
             }
         }
+
+        internal void SetLibrary(string libraryId)
+        {
+            LibrarySearchBox.Text = libraryId;
+            InstallButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        }
     }
 }
