@@ -16,7 +16,7 @@ using Shell = Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.Web.LibraryManager.Vsix.UI
 {
-    internal partial class InstallDialog : DialogWindow
+    internal partial class InstallDialog : DialogWindow, IAddClientSideLibrariesDialogTestContract
     {
         private readonly IDependencies _deps;
         private readonly string _fullPath;
@@ -45,6 +45,24 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
             _project = project;
 
             Loaded += OnLoaded;
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            OnActivateTestContract();
+        }
+
+        private void OnActivateTestContract()
+        {
+            AddClientSideLibrariesDialogTestContract.window = this;
+            AddClientSideLibrariesDialogTestContract.windowIsUp.Set();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            AddClientSideLibrariesDialogTestContract.windowIsUp.Reset();
+            AddClientSideLibrariesDialogTestContract.window = null;
         }
 
         internal InstallDialogViewModel ViewModel
@@ -218,9 +236,19 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
             }
         }
 
-        internal void SetLibrary(string libraryId)
+        void IAddClientSideLibrariesDialogTestContract.SetLibrary(string library)
         {
-            LibrarySearchBox.Text = libraryId;
+            LibrarySearchBox.Text = library;
+        }
+
+        string IAddClientSideLibrariesDialogTestContract.Library
+        {
+            get => LibrarySearchBox.Text;
+            set => LibrarySearchBox.Text = value;
+        }
+
+        void IAddClientSideLibrariesDialogTestContract.ClickInstall()
+        {
             InstallButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
     }

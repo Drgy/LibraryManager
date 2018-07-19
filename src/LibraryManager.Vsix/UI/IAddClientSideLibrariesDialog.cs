@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Microsoft.Web.LibraryManager.Vsix.UI
+﻿namespace Microsoft.Web.LibraryManager.Vsix.UI
 {
-    interface IAddClientSideLibrariesDialog
+    public interface IAddClientSideLibrariesDialogTestContract
     {
+        void SetLibrary(string library);
+        string Library { get; set; }
+
+        void ClickInstall();
     }
 }

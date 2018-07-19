@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.Test.Apex.Services;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.Test.Apex.VisualStudio.Shell;
+using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.Web.LibraryManager.Vsix.UI;
 
 namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
@@ -10,8 +12,13 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
     [Export(typeof(InstallDialogTestService))]
     public class InstallDialogTestService : VisualStudioTestService
     {
-        public void OpenDialog(Guid guid, uint commandId)
+        public InstallDialogTestExtension OpenDialog(SolutionExplorerItemTestExtension parent)
         {
+            Guid guid = Guid.Parse("44ee7bda-abda-486e-a5fe-4dd3f4cefac1");
+            uint commandId = 0x0100;
+
+            parent.Select();
+
             Task.Factory.StartNew(() =>
             {
                 this.UIInvoke(() =>
@@ -19,22 +26,44 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
                     this.CommandingService.ExecuteCommand(guid, commandId, null);
                 });
             });
+
+            return this.WaitForDialog(TimeSpan.FromSeconds(5));
         }
 
-        internal void SetFields(string library)
+        /// <summary>
+        /// Gets or sets the Synchronization service reference.
+        /// </summary>
+        [Import]
+        private ISynchronizationService SynchronizationService
         {
-            InstallDialogTestExtension testExtension = this.CreateRemotableInstance<InstallDialogTestExtension>();
-            InstallDialog dialog = null;
+            get;
+            set;
+        }
 
-            if (testExtension == null)
+        private InstallDialogTestExtension GetInstallDialogTestExtension()
+        {
+            IAddClientSideLibrariesDialogTestContract addClientSideLibrariesDialogTestContract = AddClientSideLibrariesDialogTestContract.window;
+
+            if (addClientSideLibrariesDialogTestContract != null)
             {
-                return;
+                return this.CreateRemotableInstance<InstallDialogTestExtension>(addClientSideLibrariesDialogTestContract);
             }
 
-            if (testExtension != null)
+            return null;
+        }
+
+        private InstallDialogTestExtension WaitForDialog(TimeSpan timeout)
+        {
+            InstallDialogTestExtension installDialogExtension = this.GetInstallDialogTestExtension();
+
+            if (!AddClientSideLibrariesDialogTestContract.windowIsUp.WaitOne(TimeSpan.FromMilliseconds(timeout.TotalMilliseconds * this.SynchronizationService.TimeoutMultiplier)))
             {
-                testExtension.SetFields(library);
+                throw new TimeoutException("Add -> Client Side Libraries dialog didn't pop up");
             }
+
+            installDialogExtension = this.GetInstallDialogTestExtension();
+
+            return installDialogExtension;
         }
 
         /// <summary>

@@ -5,17 +5,17 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
 {
     public class InstallDialogTestExtension : VisualStudioInProcessTestExtension<object, InstallDialogVerifier>
     {
-        internal InstallDialog InstallDialog
+        internal IAddClientSideLibrariesDialogTestContract InstallDialog
         {
             get
             {
-                return this.ObjectUnderTest as InstallDialog;
+                return this.ObjectUnderTest as IAddClientSideLibrariesDialogTestContract;
             }
         }
 
-        internal void SetFields(string library)
+        public void SetLibrary(string library)
         {
-            InstallDialog.SetLibrary(library);
+            UIInvoke(() => InstallDialog.Library = library);
         }
     }
 }

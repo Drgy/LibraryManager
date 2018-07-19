@@ -14,14 +14,12 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
         public void UITest()
         {
             SolutionExplorerItemTestExtension projNode = SolutionExplorer.RootItem["TestProjectCore20"];
-            projNode.Select();
-            Guid guid = Guid.Parse("44ee7bda-abda-486e-a5fe-4dd3f4cefac1");
-            uint commandId = 0x0100;
 
             InstallDialogTestService installDialogTestService = VisualStudio.Get<InstallDialogTestService>();
-            installDialogTestService.OpenDialog(guid, commandId);
+            InstallDialogTestExtension installDialogTestExtenstion = installDialogTestService.OpenDialog(projNode);
 
-            installDialogTestService.SetFields("jquery@3.2.0");
+            installDialogTestExtenstion.SetLibrary("jquery@3.2.0");
+            
         }
     }
 }
