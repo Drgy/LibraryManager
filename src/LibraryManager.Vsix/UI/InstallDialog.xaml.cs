@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 using EnvDTE;
@@ -204,18 +205,26 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
             }
         }
 
-        private void InstallButton_Clicked(object sender, RoutedEventArgs e)
+        private async void InstallButton_ClickedAsync(object sender, RoutedEventArgs e)
         {
-            bool isLibraryInstallationStateValid = false;
+            await ClickInstallButtonAsync();
+        }
 
-            Shell.ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                isLibraryInstallationStateValid = await ViewModel.IsLibraryInstallationStateValidAsync().ConfigureAwait(false);
-            });
+        private async Task<bool> IsLibraryInstallationStateValidAsync()
+        {
+            bool isLibraryInstallationStateValid = await ViewModel.IsLibraryInstallationStateValidAsync().ConfigureAwait(false);
+
+            return isLibraryInstallationStateValid;
+        }
+
+        async Task ClickInstallButtonAsync()
+        {
+            bool isLibraryInstallationStateValid = await IsLibraryInstallationStateValidAsync().ConfigureAwait(false);
 
             if (isLibraryInstallationStateValid)
             {
                 CloseDialog(true);
+                ViewModel.InstallPackageCommand.Execute(null);
             }
             else
             {
@@ -236,20 +245,23 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
             }
         }
 
-        void IAddClientSideLibrariesDialogTestContract.SetLibrary(string library)
-        {
-            LibrarySearchBox.Text = library;
-        }
-
         string IAddClientSideLibrariesDialogTestContract.Library
         {
             get => LibrarySearchBox.Text;
             set => LibrarySearchBox.Text = value;
         }
 
-        void IAddClientSideLibrariesDialogTestContract.ClickInstall()
+        async Task IAddClientSideLibrariesDialogTestContract.ClickInstallAsync()
         {
-            InstallButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            await ClickInstallButtonAsync();
+        }
+
+        bool IAddClientSideLibrariesDialogTestContract.IsAnyFileSelected
+        {
+            get
+            {
+                return !ViewModel.IsTreeViewEmpty;
+            }
         }
     }
 }

@@ -1,10 +1,16 @@
-﻿namespace Microsoft.Web.LibraryManager.Vsix.UI
+﻿using System.Threading.Tasks;
+
+namespace Microsoft.Web.LibraryManager.Vsix.UI
 {
+    /// <summary>
+    /// Test contract for add client side libraries dialog.
+    /// </summary>
     public interface IAddClientSideLibrariesDialogTestContract
     {
-        void SetLibrary(string library);
         string Library { get; set; }
 
-        void ClickInstall();
+        Task ClickInstallAsync();
+
+        bool IsAnyFileSelected { get; }
     }
 }

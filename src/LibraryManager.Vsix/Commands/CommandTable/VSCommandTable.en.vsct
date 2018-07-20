@@ -40,6 +40,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>&amp;Clean Client-Side Libraries</ButtonText>
+          <CanonicalName>CleanClientSideLibraries</CanonicalName>
         </Strings>
       </Button>
       <Button guid="guidLibraryManagerPackageCmdSet" id="RestoreOnBuild" priority="0x0300" type="Button">

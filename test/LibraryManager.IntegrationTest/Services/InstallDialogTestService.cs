@@ -9,6 +9,9 @@ using Microsoft.Web.LibraryManager.Vsix.UI;
 
 namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
 {
+    /// <summary>
+    /// Test service for add client side libraries dialog.
+    /// </summary>
     [Export(typeof(InstallDialogTestService))]
     public class InstallDialogTestService : VisualStudioTestService
     {
