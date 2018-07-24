@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading;
 using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,34 +13,28 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
         ProjectItemTestExtension _libManConfig;
         const string _projectName = @"TestProjectCore20";
         const string _libman = "libman.json";
-        string _pathToLibmanFile;
-        SolutionExplorerItemTestExtension _projectNode;
+        private string _libmanFileContent;
 
         [TestInitialize]
         public void initialize()
         {
             _webProject = Solution[_projectName];
             _libManConfig = _webProject[_libman];
-            _pathToLibmanFile = Path.Combine(SolutionRootPath, _projectName, _libman);
-            _projectNode = SolutionExplorer.RootItem[_projectName];
+            string pathToLibmanFile = Path.Combine(SolutionRootPath, _projectName, _libman);
+            _libmanFileContent = File.ReadAllText(pathToLibmanFile);
 
-            CleanClientSideLibraries();
-        }
-
-        private void CleanClientSideLibraries()
-        {
-            VisualStudio.ObjectModel.Commanding.ExecuteCommand("Project.CleanClientSideLibraries");
             string projectPath = Path.Combine(SolutionRootPath, _projectName);
 
-            //_libManConfig.Delete();
-            //Helpers.FileIO.WaitForDeletedFile(projectPath, Path.Combine(projectPath, _libman), caseInsensitive: false, timeout: 1000);
+            _libManConfig.Delete();
+            Helpers.FileIO.WaitForDeletedFile(projectPath, Path.Combine(projectPath, _libman), caseInsensitive: false, timeout: 1000);
         }
 
         [TestMethod]
         public void InstallDialog_SmokeTest()
         {
+            SolutionExplorerItemTestExtension projectNode = SolutionExplorer.RootItem[_projectName];
             InstallDialogTestService installDialogTestService = VisualStudio.Get<InstallDialogTestService>();
-            InstallDialogTestExtension installDialogTestExtenstion = installDialogTestService.OpenDialog(_projectNode);
+            InstallDialogTestExtension installDialogTestExtenstion = installDialogTestService.OpenDialog(projectNode);
 
             installDialogTestExtenstion.SetLibrary("jquery-validate@1.17.0");
             installDialogTestExtenstion.WaitForFileSelections();
@@ -64,8 +57,20 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
     }
   ]
 }";
-            Assert.AreEqual(manifestContents, File.ReadAllText(_pathToLibmanFile));
+            string pathToLibmanFile = Path.Combine(SolutionRootPath, _projectName, _libman);
+            Assert.AreEqual(manifestContents, File.ReadAllText(pathToLibmanFile));
             //Helpers.FileIO.WaitForRestoredFiles(pathToLibrary, expectedFiles, caseInsensitive: true);
+
+            ReplaceFileContent(_libmanFileContent);
+        }
+
+        private void ReplaceFileContent(string content)
+        {
+            Editor.Selection.SelectAll();
+            Editor.KeyboardCommands.Backspace();
+            Editor.Edit.InsertTextInBuffer(content);
+
+            _libManConfig.Save();
         }
     }
 }
