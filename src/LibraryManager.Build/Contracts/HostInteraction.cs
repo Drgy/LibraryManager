@@ -23,6 +23,8 @@ namespace Microsoft.Web.LibraryManager.Build
 
         public async Task<bool> WriteFileAsync(string path, Func<Stream> content, ILibraryInstallationState state, CancellationToken cancellationToken)
         {
+            await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             var absolutePath = new FileInfo(Path.Combine(WorkingDirectory, path));
 
             if (absolutePath.Exists)

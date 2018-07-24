@@ -23,6 +23,8 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
             string pathToLibmanFile = Path.Combine(SolutionRootPath, _projectName, _libman);
             _libmanFileContent = File.ReadAllText(pathToLibmanFile);
 
+            VisualStudio.ObjectModel.Commanding.ExecuteCommand("Project.CleanClientSideLibraries");
+
             string projectPath = Path.Combine(SolutionRootPath, _projectName);
 
             _libManConfig.Delete();

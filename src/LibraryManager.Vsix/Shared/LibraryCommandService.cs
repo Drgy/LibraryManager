@@ -220,6 +220,9 @@ namespace Microsoft.Web.LibraryManager.Vsix
                     Stopwatch swLocal = new Stopwatch();
                     swLocal.Start();
                     IDependencies dependencies = Dependencies.FromConfigFile(manifest.Key);
+
+                    await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
                     Project project = VsHelpers.GetDTEProjectFromConfig(manifest.Key);
 
                     Logger.LogEvent(string.Format(LibraryManager.Resources.Text.Restore_LibrariesForProject, project?.Name), LogLevel.Operation);
@@ -256,6 +259,8 @@ namespace Microsoft.Web.LibraryManager.Vsix
 
         private async Task<IEnumerable<ILibraryOperationResult>> RestoreLibrariesAsync(Manifest manifest, CancellationToken cancellationToken)
         {
+            await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             return await manifest.RestoreAsync(cancellationToken).ConfigureAwait(false);
         }
 

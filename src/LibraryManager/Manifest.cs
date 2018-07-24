@@ -328,6 +328,8 @@ namespace Microsoft.Web.LibraryManager
 
         private async Task<ILibraryOperationResult> RestoreLibraryAsync(ILibraryInstallationState libraryState, CancellationToken cancellationToken)
         {
+            await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             _hostInteraction.Logger.Log(string.Format(Resources.Text.Restore_RestoreOfLibraryStarted, libraryState.LibraryId, libraryState.DestinationPath), LogLevel.Operation);
 
             if (cancellationToken.IsCancellationRequested)
