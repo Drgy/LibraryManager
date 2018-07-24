@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.Web.LibraryManager.Contracts;
+using Microsoft.Web.LibraryManager.Vsix.UI.Controls;
 using Microsoft.Web.LibraryManager.Vsix.UI.Models;
 using Shell = Microsoft.VisualStudio.Shell;
 
@@ -223,6 +224,7 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
 
             if (isLibraryInstallationStateValid)
             {
+                await Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 CloseDialog(true);
                 ViewModel.InstallPackageCommand.Execute(null);
             }
@@ -247,8 +249,14 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
 
         string IAddClientSideLibrariesDialogTestContract.Library
         {
-            get => LibrarySearchBox.Text;
-            set => LibrarySearchBox.Text = value;
+            get
+            {
+                return LibrarySearchBox.Text;
+            }
+            set
+            {
+                this.LibrarySearchBox.Text = value;
+            }
         }
 
         async Task IAddClientSideLibrariesDialogTestContract.ClickInstallAsync()

@@ -24,7 +24,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         {
             UIInvoke(() =>
             {
-                InstallDialog.Library = library;
+                this.InstallDialog.Library = library;
             });
         }
 
@@ -36,15 +36,20 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
                 {
                     return InstallDialog.IsAnyFileSelected;
                 });
-            }, TimeSpan.FromSeconds(20), conditionDescription: "File list nopt loaded");
+            }, TimeSpan.FromSeconds(20), conditionDescription: "File list not loaded");
         }
 
         public void ClickInstall()
         {
-            UIInvoke(async() =>
+            Task.Run(async () =>
             {
-                await InstallDialog.ClickInstallAsync();
+                await UIInvoke(async () =>
+                {
+                    await InstallDialog.ClickInstallAsync();
+                });
             }).Wait();
+
+            return;
         }
     }
 }
