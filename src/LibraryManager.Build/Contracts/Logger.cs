@@ -27,25 +27,20 @@ namespace Microsoft.Web.LibraryManager.Build
         {
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                await LogAsync(message, level);
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                switch (level)
+                {
+                    case Contracts.LogLevel.Error:
+                        Errors.Add(message);
+                        break;
+                    case Contracts.LogLevel.Operation:
+                    case Contracts.LogLevel.Task:
+                    case Contracts.LogLevel.Status:
+                        Messages.Add(message);
+                        break;
+                }
             });
-        }
-
-        public async Task LogAsync(string message, Contracts.LogLevel level)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            switch (level)
-            {
-                case Contracts.LogLevel.Error:
-                    Errors.Add(message);
-                    break;
-                case Contracts.LogLevel.Operation:
-                case Contracts.LogLevel.Task:
-                case Contracts.LogLevel.Status:
-                    Messages.Add(message);
-                    break;
-            }
         }
     }
 }

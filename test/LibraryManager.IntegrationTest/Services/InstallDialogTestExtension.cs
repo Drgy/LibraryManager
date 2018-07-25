@@ -33,16 +33,16 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             {
                 return UIInvoke(() =>
                 {
-                    return this.AddClientSideLibrariesDialog.IsAnyFileSelected;
+                    return AddClientSideLibrariesDialog.IsAnyFileSelected;
                 });
-            }, TimeSpan.FromSeconds(30), conditionDescription: "File list not loaded");
+            }, TimeSpan.FromSeconds(20), conditionDescription: "File list not loaded");
         }
 
         public void ClickInstall()
         {
             UIInvoke(() =>
             {
-                ThreadHelper.JoinableTaskFactory.Run(async() =>
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     await this.AddClientSideLibrariesDialog.ClickInstallAsync();
                 });
