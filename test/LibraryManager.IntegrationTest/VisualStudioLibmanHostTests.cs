@@ -22,7 +22,6 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
 
         private static VisualStudioLibmanHostTest _instance;
         private static string _resultPath;
-        private static string _solutionRootPath;
         private static string _solutionPath;
 
         public static string SolutionRootPath { get; private set; }

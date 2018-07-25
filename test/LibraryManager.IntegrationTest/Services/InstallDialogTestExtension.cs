@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Globalization;
-using System.Threading.Tasks;
 using Microsoft.Test.Apex.Services;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using Microsoft.Web.LibraryManager.Vsix.UI;
 
 namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
@@ -28,9 +25,11 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             {
                 this.InstallDialog.Library = library;
             });
+
+            WaitForFileSelections();
         }
 
-        public void WaitForFileSelections()
+        private void WaitForFileSelections()
         {
             WaitFor.IsTrue(() =>
             {
@@ -38,7 +37,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
                 {
                     return this.InstallDialog.IsAnyFileSelected;
                 });
-            }, TimeSpan.FromSeconds(20), conditionDescription: "File list not loaded");
+            }, TimeSpan.FromSeconds(30), conditionDescription: "File list not loaded");
         }
 
         public void ClickInstall()
