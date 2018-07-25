@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.Web.LibraryManager.Contracts;
 
 namespace Microsoft.Web.LibraryManager.Vsix
@@ -69,9 +70,9 @@ namespace Microsoft.Web.LibraryManager.Vsix
 
         private void PushToErrorList()
         {
-            VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.Run(async () =>
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 TableDataSource.Instance.CleanErrors(ConfigFileName);
 

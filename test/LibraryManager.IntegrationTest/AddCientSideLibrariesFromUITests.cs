@@ -38,10 +38,10 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
         {
             SolutionExplorerItemTestExtension projectNode = SolutionExplorer.RootItem[_projectName];
             InstallDialogTestService installDialogTestService = VisualStudio.Get<InstallDialogTestService>();
-            InstallDialogTestExtension installDialogTestExtenstion = installDialogTestService.OpenDialog(projectNode);
+            AddClientSideLibrariesDialogTestExtension installDialogTestExtenstion = installDialogTestService.OpenDialog(projectNode);
 
             installDialogTestExtenstion.SetLibrary("jquery-validate@1.17.0");
-            //installDialogTestExtenstion.WaitForFileSelections();
+            installDialogTestExtenstion.WaitForFileSelections();
             installDialogTestExtenstion.ClickInstall();
 
             string pathToLibrary = Path.Combine(SolutionRootPath, _projectName, "wwwroot", "lib", "jquery-validate");

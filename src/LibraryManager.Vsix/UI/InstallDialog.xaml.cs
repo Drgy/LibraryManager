@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 using EnvDTE;
@@ -12,7 +11,6 @@ using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.Web.LibraryManager.Contracts;
-using Microsoft.Web.LibraryManager.Vsix.UI.Controls;
 using Microsoft.Web.LibraryManager.Vsix.UI.Models;
 using Shell = Microsoft.VisualStudio.Shell;
 
@@ -214,7 +212,6 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
         private async Task<bool> IsLibraryInstallationStateValidAsync()
         {
             bool isLibraryInstallationStateValid = await ViewModel.IsLibraryInstallationStateValidAsync().ConfigureAwait(false);
-
             return isLibraryInstallationStateValid;
         }
 

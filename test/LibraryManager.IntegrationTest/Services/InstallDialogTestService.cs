@@ -15,7 +15,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
     [Export(typeof(InstallDialogTestService))]
     public class InstallDialogTestService : VisualStudioTestService
     {
-        public InstallDialogTestExtension OpenDialog(SolutionExplorerItemTestExtension parent)
+        public AddClientSideLibrariesDialogTestExtension OpenDialog(SolutionExplorerItemTestExtension parent)
         {
             Guid guid = Guid.Parse("44ee7bda-abda-486e-a5fe-4dd3f4cefac1");
             uint commandId = 0x0100;
@@ -34,7 +34,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         }
 
         /// <summary>
-        /// Gets or sets the Synchronization service reference.
+        /// Gets or sets the synchronization service reference.
         /// </summary>
         [Import]
         private ISynchronizationService SynchronizationService
@@ -43,21 +43,21 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             set;
         }
 
-        private InstallDialogTestExtension GetInstallDialogTestExtension()
+        private AddClientSideLibrariesDialogTestExtension GetInstallDialogTestExtension()
         {
             IAddClientSideLibrariesDialogTestContract addClientSideLibrariesDialogTestContract = AddClientSideLibrariesDialogTestContract.window;
 
             if (addClientSideLibrariesDialogTestContract != null)
             {
-                return this.CreateRemotableInstance<InstallDialogTestExtension>(addClientSideLibrariesDialogTestContract);
+                return this.CreateRemotableInstance<AddClientSideLibrariesDialogTestExtension>(addClientSideLibrariesDialogTestContract);
             }
 
             return null;
         }
 
-        private InstallDialogTestExtension WaitForDialog(TimeSpan timeout)
+        private AddClientSideLibrariesDialogTestExtension WaitForDialog(TimeSpan timeout)
         {
-            InstallDialogTestExtension installDialogExtension = this.GetInstallDialogTestExtension();
+            AddClientSideLibrariesDialogTestExtension installDialogExtension = this.GetInstallDialogTestExtension();
 
             if (!AddClientSideLibrariesDialogTestContract.windowIsUp.WaitOne(TimeSpan.FromMilliseconds(timeout.TotalMilliseconds * this.SynchronizationService.TimeoutMultiplier)))
             {

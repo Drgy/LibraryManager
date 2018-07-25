@@ -2,9 +2,13 @@
 
 namespace Microsoft.Web.LibraryManager.Vsix.UI
 {
-    public class AddClientSideLibrariesDialogTestContract
+    /// <summary>
+    /// This class gives apex access to opened - add client side libraries dialog.
+    /// </summary>
+    internal class AddClientSideLibrariesDialogTestContract
     {
         public static IAddClientSideLibrariesDialogTestContract window;
+        // This event lets apex know when the dialog is open.
         public static EventWaitHandle windowIsUp = new EventWaitHandle(false, EventResetMode.ManualReset);
     }
 }

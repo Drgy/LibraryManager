@@ -73,7 +73,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
             }
         }
 
-        public SolutionExplorerService SolutionExplorer
+        internal SolutionExplorerService SolutionExplorer
         {
             get
             {

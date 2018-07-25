@@ -260,7 +260,6 @@ namespace Microsoft.Web.LibraryManager.Vsix
         private async Task<IEnumerable<ILibraryOperationResult>> RestoreLibrariesAsync(Manifest manifest, CancellationToken cancellationToken)
         {
             await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
             return await manifest.RestoreAsync(cancellationToken).ConfigureAwait(false);
         }
 

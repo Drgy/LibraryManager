@@ -6,12 +6,12 @@ using Microsoft.Web.LibraryManager.Vsix.UI;
 
 namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
 {
-    public class InstallDialogTestExtension : VisualStudioInProcessTestExtension<object, InstallDialogVerifier>
+    public class AddClientSideLibrariesDialogTestExtension : VisualStudioInProcessTestExtension<object, AddClientSideLibrariesDialogVerifier>
     {
         /// <summary>
-        /// InstallDialog test extension for interaction with Visual Studio inprocess types
+        /// Add client side libraries dialog test extension for interaction with visual studio inprocess types
         /// </summary>
-        internal IAddClientSideLibrariesDialogTestContract InstallDialog
+        public IAddClientSideLibrariesDialogTestContract AddClientSideLibrariesDialog
         {
             get
             {
@@ -23,19 +23,17 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         {
             UIInvoke(() =>
             {
-                this.InstallDialog.Library = library;
+                this.AddClientSideLibrariesDialog.Library = library;
             });
-
-            WaitForFileSelections();
         }
 
-        private void WaitForFileSelections()
+        public void WaitForFileSelections()
         {
             WaitFor.IsTrue(() =>
             {
                 return UIInvoke(() =>
                 {
-                    return this.InstallDialog.IsAnyFileSelected;
+                    return this.AddClientSideLibrariesDialog.IsAnyFileSelected;
                 });
             }, TimeSpan.FromSeconds(30), conditionDescription: "File list not loaded");
         }
@@ -46,7 +44,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             {
                 ThreadHelper.JoinableTaskFactory.Run(async() =>
                 {
-                    await this.InstallDialog.ClickInstallAsync();
+                    await this.AddClientSideLibrariesDialog.ClickInstallAsync();
                 });
             });
         }

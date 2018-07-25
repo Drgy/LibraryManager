@@ -55,8 +55,6 @@ namespace Microsoft.Web.LibraryManager.Vsix
                 await FileHelpers.SafeWriteToFileAsync(absolutePath.FullName, stream, cancellationToken);
             }
 
-            await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
             Logger.Log(string.Format(LibraryManager.Resources.Text.FileWrittenToDisk, relativePath.Replace(Path.DirectorySeparatorChar, '/')), LogLevel.Operation);
 
             return true;
