@@ -147,23 +147,19 @@ namespace Microsoft.Web.LibraryManager.Providers.Unpkg
 
         private bool IsLibraryUpToDate(ILibraryInstallationState state, CancellationToken cancellationToken)
         {
+            string cacheDir = Path.Combine(CacheFolder, state.Name, state.Version);
+            string destinationDir = Path.Combine(HostInteraction.WorkingDirectory, state.DestinationPath);
+
             try
             {
-                if (!string.IsNullOrEmpty(state.Name) && !string.IsNullOrEmpty(state.Version))
+                foreach (string sourceFile in state.Files)
                 {
-                    string cacheDir = Path.Combine(CacheFolder, state.Name, state.Version);
-                    string destinationDir = Path.Combine(HostInteraction.WorkingDirectory, state.DestinationPath);
+                    var destinationFile = new FileInfo(Path.Combine(destinationDir, sourceFile).Replace('\\', '/'));
+                    var cacheFile = new FileInfo(Path.Combine(cacheDir, sourceFile).Replace('\\', '/'));
 
-
-                    foreach (string sourceFile in state.Files)
+                    if (!destinationFile.Exists || !cacheFile.Exists || !FileHelpers.AreFilesUpToDate(destinationFile, cacheFile))
                     {
-                        var destinationFile = new FileInfo(Path.Combine(destinationDir, sourceFile).Replace('\\', '/'));
-                        var cacheFile = new FileInfo(Path.Combine(cacheDir, sourceFile).Replace('\\', '/'));
-
-                        if (!destinationFile.Exists || !cacheFile.Exists || !FileHelpers.AreFilesUpToDate(destinationFile, cacheFile))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
             }
