@@ -69,12 +69,17 @@ namespace Microsoft.Web.LibraryManager.Vsix
 
         private void PushToErrorList()
         {
-            TableDataSource.Instance.CleanErrors(ConfigFileName);
-
-            if (Errors.Count > 0)
+            VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                TableDataSource.Instance.AddErrors(Errors, ProjectName, ConfigFileName);
-            }
+                await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                TableDataSource.Instance.CleanErrors(ConfigFileName);
+
+                if (Errors.Count > 0)
+                {
+                    TableDataSource.Instance.AddErrors(Errors, ProjectName, ConfigFileName);
+                }
+            });
         }
 
         public void ClearErrors()

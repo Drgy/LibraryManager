@@ -13,15 +13,16 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
         ProjectItemTestExtension _libManConfig;
         const string _projectName = @"TestProjectCore20";
         const string _libman = "libman.json";
-        private string _libmanFileContent;
+        private string _initialLibmanFileContent;
+        private string _pathToLibmanFile;
 
         [TestInitialize]
         public void initialize()
         {
             _webProject = Solution[_projectName];
             _libManConfig = _webProject[_libman];
-            string pathToLibmanFile = Path.Combine(SolutionRootPath, _projectName, _libman);
-            _libmanFileContent = File.ReadAllText(pathToLibmanFile);
+            _pathToLibmanFile = Path.Combine(SolutionRootPath, _projectName, _libman);
+            _initialLibmanFileContent = File.ReadAllText(_pathToLibmanFile);
 
             VisualStudio.ObjectModel.Commanding.ExecuteCommand("Project.CleanClientSideLibraries");
 
@@ -55,7 +56,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
   ""libraries"": [
     {
       ""library"": ""jquery-validate@1.17.0"",
-      ""destination"": ""wwwroot/lib/jquery-validate""
+      ""destination"": ""wwwroot/lib/jquery-validate/""
     }
   ]
 }";
@@ -63,16 +64,15 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
             Assert.AreEqual(manifestContents, File.ReadAllText(pathToLibmanFile));
             //Helpers.FileIO.WaitForRestoredFiles(pathToLibrary, expectedFiles, caseInsensitive: true);
 
-            ReplaceFileContent(_libmanFileContent);
+            ReplaceFileContentAndDeleteLibrary(_initialLibmanFileContent, expectedFiles, pathToLibrary);
         }
 
-        private void ReplaceFileContent(string content)
+        private void ReplaceFileContentAndDeleteLibrary(string content, string[] filesToDelete, string pathToLibrary)
         {
-            Editor.Selection.SelectAll();
-            Editor.KeyboardCommands.Backspace();
-            Editor.Edit.InsertTextInBuffer(content);
+            Helpers.FileIO.WaitForDeletedFiles(pathToLibrary, filesToDelete, caseInsensitive: true);
 
-            _libManConfig.Save();
+            string text = File.ReadAllText(_pathToLibmanFile);
+            File.WriteAllText(_pathToLibmanFile, _initialLibmanFileContent);
         }
     }
 }

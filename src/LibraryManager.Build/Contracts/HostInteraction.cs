@@ -23,8 +23,6 @@ namespace Microsoft.Web.LibraryManager.Build
 
         public async Task<bool> WriteFileAsync(string path, Func<Stream> content, ILibraryInstallationState state, CancellationToken cancellationToken)
         {
-            await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
             var absolutePath = new FileInfo(Path.Combine(WorkingDirectory, path));
 
             if (absolutePath.Exists)
@@ -47,6 +45,8 @@ namespace Microsoft.Web.LibraryManager.Build
                     return false;
                 }
             }
+
+            await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             Logger.Log(string.Format(Resources.Text.FileWrittenToDisk, path.Replace('\\', '/')), LogLevel.Operation);
 

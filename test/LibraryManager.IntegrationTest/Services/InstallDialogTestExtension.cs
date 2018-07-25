@@ -36,7 +36,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             {
                 return UIInvoke(() =>
                 {
-                    return InstallDialog.IsAnyFileSelected;
+                    return this.InstallDialog.IsAnyFileSelected;
                 });
             }, TimeSpan.FromSeconds(20), conditionDescription: "File list not loaded");
         }
