@@ -33,6 +33,9 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
             VisualStudio.ObjectModel.Commanding.ExecuteCommand("Project.ManageClientSideLibraries");
             Helpers.FileIO.WaitForRestoredFile(projectPath, Path.Combine(projectPath, _libman), caseInsensitive: false, timeout: 1000);
 
+            _libManConfig = _webProject[_libman];
+            _libManConfig.Open();
+
             string pathToLibrary = Path.Combine(SolutionRootPath, _projectName, "wwwroot", "lib", "jquery-validate");
             string[] expectedFiles = new[]
             {
