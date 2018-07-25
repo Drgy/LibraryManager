@@ -46,8 +46,6 @@ namespace Microsoft.Web.LibraryManager.Build
                 }
             }
 
-            await VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
             Logger.Log(string.Format(Resources.Text.FileWrittenToDisk, path.Replace('\\', '/')), LogLevel.Operation);
 
             return true;
