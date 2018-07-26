@@ -2,8 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using ThreadHelper = Microsoft.VisualStudio.Shell.ThreadHelper;
 
 namespace Microsoft.Web.LibraryManager.Build
 {
@@ -25,22 +23,17 @@ namespace Microsoft.Web.LibraryManager.Build
 
         public void Log(string message, Contracts.LogLevel level)
         {
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            switch (level)
             {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-                switch (level)
-                {
-                    case Contracts.LogLevel.Error:
-                        Errors.Add(message);
-                        break;
-                    case Contracts.LogLevel.Operation:
-                    case Contracts.LogLevel.Task:
-                    case Contracts.LogLevel.Status:
-                        Messages.Add(message);
-                        break;
-                }
-            });
+                case Contracts.LogLevel.Error:
+                    Errors.Add(message);
+                    break;
+                case Contracts.LogLevel.Operation:
+                case Contracts.LogLevel.Task:
+                case Contracts.LogLevel.Status:
+                    Messages.Add(message);
+                    break;
+            }
         }
     }
 }

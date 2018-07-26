@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.Web.LibraryManager.Contracts;
 
 namespace Microsoft.Web.LibraryManager.Vsix
@@ -43,7 +42,7 @@ namespace Microsoft.Web.LibraryManager.Vsix
 
         private static void AddLineAndColumn(IEnumerable<string> lines, ILibraryInstallationState state, DisplayError[] errors)
         {
-            if(string.IsNullOrEmpty(state?.LibraryId))
+            if (string.IsNullOrEmpty(state?.LibraryId))
             {
                 return;
             }
@@ -70,17 +69,12 @@ namespace Microsoft.Web.LibraryManager.Vsix
 
         private void PushToErrorList()
         {
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            TableDataSource.Instance.CleanErrors(ConfigFileName);
+
+            if (Errors.Count > 0)
             {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-                TableDataSource.Instance.CleanErrors(ConfigFileName);
-
-                if (Errors.Count > 0)
-                {
-                    TableDataSource.Instance.AddErrors(Errors, ProjectName, ConfigFileName);
-                }
-            });
+                TableDataSource.Instance.AddErrors(Errors, ProjectName, ConfigFileName);
+            }
         }
 
         public void ClearErrors()
