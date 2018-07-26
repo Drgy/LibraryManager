@@ -68,7 +68,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         }
 
         /// <summary>
-        /// Gets or sets the Commanding service.
+        /// Gets or sets the commanding service.
         /// </summary>
         [Import(AllowDefault = true)]
         private Lazy<CommandingService> LazyCommandingService
@@ -78,7 +78,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         }
 
         /// <summary>
-        /// Gets the Commanding service.
+        /// Gets the commanding service.
         /// </summary>
         private CommandingService CommandingService
         {
