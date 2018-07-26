@@ -220,7 +220,6 @@ namespace Microsoft.Web.LibraryManager.Vsix
                     Stopwatch swLocal = new Stopwatch();
                     swLocal.Start();
                     IDependencies dependencies = Dependencies.FromConfigFile(manifest.Key);
-
                     Project project = VsHelpers.GetDTEProjectFromConfig(manifest.Key);
 
                     Logger.LogEvent(string.Format(LibraryManager.Resources.Text.Restore_LibrariesForProject, project?.Name), LogLevel.Operation);

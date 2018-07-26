@@ -37,7 +37,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
         {
             SolutionExplorerItemTestExtension projectNode = SolutionExplorer.RootItem[_projectName];
             InstallDialogTestService installDialogTestService = VisualStudio.Get<InstallDialogTestService>();
-            AddClientSideLibrariesDialogTestExtension installDialogTestExtenstion = installDialogTestService.OpenDialog(projectNode);
+            InstallDialogTestExtension installDialogTestExtenstion = installDialogTestService.OpenDialog(projectNode);
 
             installDialogTestExtenstion.SetLibrary("jquery-validate@1.17.0");
             installDialogTestExtenstion.WaitForFileSelections();

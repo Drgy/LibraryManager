@@ -5,7 +5,7 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
     /// <summary>
     /// Test contract for add client side libraries dialog.
     /// </summary>
-    public interface IAddClientSideLibrariesDialogTestContract
+    public interface IInstallDialogTestContract
     {
         string Library { get; set; }
 

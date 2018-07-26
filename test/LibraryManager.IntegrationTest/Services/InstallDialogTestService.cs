@@ -15,7 +15,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
     [Export(typeof(InstallDialogTestService))]
     public class InstallDialogTestService : VisualStudioTestService
     {
-        public AddClientSideLibrariesDialogTestExtension OpenDialog(SolutionExplorerItemTestExtension parent)
+        public InstallDialogTestExtension OpenDialog(SolutionExplorerItemTestExtension parent)
         {
             Guid guid = Guid.Parse("44ee7bda-abda-486e-a5fe-4dd3f4cefac1");
             uint commandId = 0x0100;
@@ -43,23 +43,23 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             set;
         }
 
-        private AddClientSideLibrariesDialogTestExtension GetInstallDialogTestExtension()
+        private InstallDialogTestExtension GetInstallDialogTestExtension()
         {
-            IAddClientSideLibrariesDialogTestContract addClientSideLibrariesDialogTestContract = AddClientSideLibrariesDialogTestContract.window;
+            IInstallDialogTestContract addClientSideLibrariesDialogTestContract = InstallDialogTestContract.window;
 
             if (addClientSideLibrariesDialogTestContract != null)
             {
-                return this.CreateRemotableInstance<AddClientSideLibrariesDialogTestExtension>(addClientSideLibrariesDialogTestContract);
+                return this.CreateRemotableInstance<InstallDialogTestExtension>(addClientSideLibrariesDialogTestContract);
             }
 
             return null;
         }
 
-        private AddClientSideLibrariesDialogTestExtension WaitForDialog(TimeSpan timeout)
+        private InstallDialogTestExtension WaitForDialog(TimeSpan timeout)
         {
-            AddClientSideLibrariesDialogTestExtension installDialogExtension = this.GetInstallDialogTestExtension();
+            InstallDialogTestExtension installDialogExtension = this.GetInstallDialogTestExtension();
 
-            if (!AddClientSideLibrariesDialogTestContract.windowIsUp.WaitOne(TimeSpan.FromMilliseconds(timeout.TotalMilliseconds * this.SynchronizationService.TimeoutMultiplier)))
+            if (!InstallDialogTestContract.windowIsUp.WaitOne(TimeSpan.FromMilliseconds(timeout.TotalMilliseconds * this.SynchronizationService.TimeoutMultiplier)))
             {
                 throw new TimeoutException("Add -> Client Side Libraries dialog didn't pop up");
             }

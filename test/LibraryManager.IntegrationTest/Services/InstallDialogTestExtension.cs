@@ -6,16 +6,16 @@ using Microsoft.Web.LibraryManager.Vsix.UI;
 
 namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
 {
-    public class AddClientSideLibrariesDialogTestExtension : VisualStudioInProcessTestExtension<object, AddClientSideLibrariesDialogVerifier>
+    public class InstallDialogTestExtension : VisualStudioInProcessTestExtension<object, InstallDialogVerifier>
     {
         /// <summary>
         /// Add client side libraries dialog test extension for interaction with visual studio inprocess types
         /// </summary>
-        public IAddClientSideLibrariesDialogTestContract AddClientSideLibrariesDialog
+        public IInstallDialogTestContract InstallDialog
         {
             get
             {
-                return this.ObjectUnderTest as IAddClientSideLibrariesDialogTestContract;
+                return this.ObjectUnderTest as IInstallDialogTestContract;
             }
         }
 
@@ -23,7 +23,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         {
             UIInvoke(() =>
             {
-                this.AddClientSideLibrariesDialog.Library = library;
+                this.InstallDialog.Library = library;
             });
         }
 
@@ -33,7 +33,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             {
                 return UIInvoke(() =>
                 {
-                    return this.AddClientSideLibrariesDialog.IsAnyFileSelected;
+                    return this.InstallDialog.IsAnyFileSelected;
                 });
             }, TimeSpan.FromSeconds(20), conditionDescription: "File list not loaded");
         }
@@ -42,7 +42,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         {
             UIInvoke(() =>
             {
-                ThreadHelper.JoinableTaskFactory.RunAsync(async () => await this.AddClientSideLibrariesDialog.ClickInstallAsync()).Task.ConfigureAwait(false);
+                ThreadHelper.JoinableTaskFactory.RunAsync(async () => await this.InstallDialog.ClickInstallAsync()).Task.ConfigureAwait(false);
             });
         }
     }

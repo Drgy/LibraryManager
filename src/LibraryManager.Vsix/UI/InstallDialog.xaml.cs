@@ -16,7 +16,7 @@ using Shell = Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.Web.LibraryManager.Vsix.UI
 {
-    internal partial class InstallDialog : DialogWindow, IAddClientSideLibrariesDialogTestContract
+    internal partial class InstallDialog : DialogWindow, IInstallDialogTestContract
     {
         private readonly IDependencies _deps;
         private readonly string _fullPath;
@@ -55,14 +55,14 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
 
         private void OnActivateTestContract()
         {
-            AddClientSideLibrariesDialogTestContract.window = this;
-            AddClientSideLibrariesDialogTestContract.windowIsUp.Set();
+            InstallDialogTestContract.window = this;
+            InstallDialogTestContract.windowIsUp.Set();
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            AddClientSideLibrariesDialogTestContract.windowIsUp.Reset();
-            AddClientSideLibrariesDialogTestContract.window = null;
+            InstallDialogTestContract.windowIsUp.Reset();
+            InstallDialogTestContract.window = null;
         }
 
         internal InstallDialogViewModel ViewModel
@@ -243,7 +243,7 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
             }
         }
 
-        string IAddClientSideLibrariesDialogTestContract.Library
+        string IInstallDialogTestContract.Library
         {
             get
             {
@@ -255,12 +255,12 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
             }
         }
 
-        async Task IAddClientSideLibrariesDialogTestContract.ClickInstallAsync()
+        async Task IInstallDialogTestContract.ClickInstallAsync()
         {
             await ClickInstallButtonAsync();
         }
 
-        bool IAddClientSideLibrariesDialogTestContract.IsAnyFileSelected
+        bool IInstallDialogTestContract.IsAnyFileSelected
         {
             get
             {

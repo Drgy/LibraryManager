@@ -2,7 +2,7 @@
 
 namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
 {
-    public class AddClientSideLibrariesDialogVerifier : VisualStudioInProcessTestExtensionVerifier
+    public class InstallDialogVerifier : VisualStudioInProcessTestExtensionVerifier
     {
     }
 }
