@@ -17,7 +17,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
         private string _pathToLibmanFile;
 
         [TestInitialize]
-        public void initialize()
+        public void Initialize()
         {
             _webProject = Solution[_projectName];
             _libManConfig = _webProject[_libman];
@@ -60,7 +60,6 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
     }
   ]
 }";
-
             Helpers.FileIO.WaitForRestoredFiles(pathToLibrary, expectedFiles, caseInsensitive: true, timeout: 20000);
             Assert.AreEqual(manifestContents, File.ReadAllText(_pathToLibmanFile));
         }
@@ -69,6 +68,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
         public void Cleanup()
         {
             _libManConfig = _webProject[_libman];
+
             if (_libManConfig != null)
             {
                 _libManConfig.Open();
