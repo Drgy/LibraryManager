@@ -33,7 +33,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
             {
                 return UIInvoke(() =>
                 {
-                    return AddClientSideLibrariesDialog.IsAnyFileSelected;
+                    return this.AddClientSideLibrariesDialog.IsAnyFileSelected;
                 });
             }, TimeSpan.FromSeconds(20), conditionDescription: "File list not loaded");
         }
@@ -42,10 +42,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
         {
             UIInvoke(() =>
             {
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
-                {
-                    await this.AddClientSideLibrariesDialog.ClickInstallAsync();
-                });
+                ThreadHelper.JoinableTaskFactory.RunAsync(async () => await this.AddClientSideLibrariesDialog.ClickInstallAsync()).Task.ConfigureAwait(false);
             });
         }
     }

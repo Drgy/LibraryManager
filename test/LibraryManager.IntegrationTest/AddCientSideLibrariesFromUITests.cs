@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +28,7 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
             {
                 string projectPath = Path.Combine(SolutionRootPath, _projectName);
                 _libManConfig.Delete();
-                Helpers.FileIO.WaitForDeletedFile(projectPath, Path.Combine(projectPath, _libman), caseInsensitive: false, timeout: 1000);
+                Helpers.FileIO.WaitForDeletedFile(projectPath, Path.Combine(projectPath, _libman), caseInsensitive: false);
             }
         }
 
@@ -62,28 +61,23 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest
   ]
 }";
 
+            Helpers.FileIO.WaitForRestoredFiles(pathToLibrary, expectedFiles, caseInsensitive: true, timeout: 20000);
             Assert.AreEqual(manifestContents, File.ReadAllText(_pathToLibmanFile));
-            Helpers.FileIO.WaitForRestoredFiles(pathToLibrary, expectedFiles, caseInsensitive: true);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            SolutionExplorerItemTestExtension manifestNode = SolutionExplorer.FindItemRecursive("libman.json");
-
-            if (manifestNode != null)
+            _libManConfig = _webProject[_libman];
+            if (_libManConfig != null)
             {
-                manifestNode.Select();
+                _libManConfig.Open();
 
-                Guid guid = Guid.Parse("44ee7bda-abda-486e-a5fe-4dd3f4cefac1");
-                uint commandId = 0x0200;
+                Editor.Selection.SelectAll();
+                Editor.KeyboardCommands.Backspace();
+                Editor.Edit.InsertTextInBuffer(_initialLibmanFileContent);
 
-                // Invoke- Clean Client-Side Libraries command to delete the installed library files
-                VisualStudio.ObjectModel.Commanding.ExecuteCommand(guid, commandId, null);
-
-                // Restore the contents of libman.json file
-                string text = File.ReadAllText(_pathToLibmanFile);
-                File.WriteAllText(_pathToLibmanFile, _initialLibmanFileContent);
+                _libManConfig.Save();
             }
         }
     }

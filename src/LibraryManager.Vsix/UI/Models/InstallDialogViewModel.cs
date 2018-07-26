@@ -418,10 +418,7 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI.Models
 
         private void InstallPackage()
         {
-            Shell.ThreadHelper.JoinableTaskFactory.Run(async() =>
-            {
-                await InstallPackageAsync();
-            });
+            Shell.ThreadHelper.JoinableTaskFactory.RunAsync(async() => await InstallPackageAsync()).Task.ConfigureAwait(false);
         }
 
         private async Task InstallPackageAsync()
