@@ -15,12 +15,10 @@ namespace Microsoft.Web.LibraryManager.IntegrationTest.Services
     [Export(typeof(InstallDialogTestService))]
     public class InstallDialogTestService : VisualStudioTestService
     {
-        public InstallDialogTestExtension OpenDialog(SolutionExplorerItemTestExtension parent)
+        public InstallDialogTestExtension OpenDialog()
         {
             Guid guid = Guid.Parse("44ee7bda-abda-486e-a5fe-4dd3f4cefac1");
             uint commandId = 0x0100;
-
-            parent.Select();
 
             Task.Factory.StartNew(() =>
             {

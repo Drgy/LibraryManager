@@ -221,6 +221,7 @@ namespace Microsoft.Web.LibraryManager.Vsix.UI
 
             if (isLibraryInstallationStateValid)
             {
+                await Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 CloseDialog(true);
                 ViewModel.InstallPackageCommand.Execute(null);
             }
