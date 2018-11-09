@@ -129,7 +129,7 @@ namespace Microsoft.Web.LibraryManager.Providers.jsDelivr
                 {
                     JValue pathValue = file["name"] as JValue;
                     string path = pathValue?.Value as string;
-                    
+
                     if (path != null && path.Length > 0)
                     {
                         // Don't include the leading "/" in the file paths, so you get dist/jquery.js rather than /dist/jquery.js
@@ -266,7 +266,7 @@ namespace Microsoft.Web.LibraryManager.Providers.jsDelivr
 
             foreach (string version in versionsArray)
             {
-                versions.Add(LibraryIdToNameAndVersionConverter.Instance.GetLibraryId(name, version, _provider.Id));
+                versions.Add(version);
             }
 
             return versions;
